@@ -6,9 +6,6 @@ use warnings;
 
 our $VERSION = '0.0011';
 
-# blech! package variables
-use vars qw( @HIDDEN $VERBOSE );
-
 # a map ( $hidden_file => 1 ) to speed determining if a module/file is hidden
 my %IS_HIDDEN;
 
@@ -57,8 +54,8 @@ sub _as_filenames {
     return map { /^(\w+::)*\w+$/ ? _to_filename($_) : $_ } @_;
 }
 
+our $VERBOSE;
 BEGIN {
-
     unless ( defined $VERBOSE ) { # unless user-defined elsewhere, set default
         $VERBOSE
             = defined $ENV{DEVEL_HIDE_VERBOSE} ? $ENV{DEVEL_HIDE_VERBOSE} : 1;
@@ -98,6 +95,7 @@ sub _push_hidden {
 # as well as @HIDDEN it accepts Module::Module as well as File/Names.pm
 
 BEGIN {
+    our @HIDDEN;
 
     # unless @HIDDEN was user-defined elsewhere, set default
     if ( !@HIDDEN && $ENV{DEVEL_HIDE_PM} ) {
